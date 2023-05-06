@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  hashedPassword String
+  emailVerified Boolean? @default(false)
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  privilege Int? @default(0)
+
+  blogs Blog[]
+  comment Comment[]
+  profile Profile?
+  reply_comment Reply_comment[]
+
+  vote VoteBlog[] @relation(fields: [vote_id], references: [id])
+  vote_id String[] @db.ObjectId
+}
+
+model Profile {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  fname  String
+  lname  String
+  image String? @default("/unknow_user.png")
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId @unique
+}
+
+model Blog {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+  description String
+  create_date DateTime @default(now())
+
+  comment Comment[]
+  reply Reply_comment[]
+  vote VoteBlog?
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+
+  category CategoryBlog @relation(fields: [category_id], references: [id], onDelete: Cascade)
+  category_id String @db.ObjectId @default("6451ccc5b6fe89bc53559363")
+
+  roadmap Roadmap @relation(fields: [roadmap_id], references: [id], onDelete: Cascade)
+  roadmap_id String @db.ObjectId @default("6451cd9db6fe89bc53559364")
+}
+
+model CategoryBlog {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  blog Blog[]
+}
+model Roadmap {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  color String? @default("")
+
+  blog Blog[]
+}
+
+model VoteBlog {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  user User[] @relation(fields: [user_id], references: [id])
+  user_id String[] @db.ObjectId
+
+  blog Blog @relation(fields: [blog_id], references: [id], onDelete: Cascade)
+  blog_id String @db.ObjectId @unique
+}
+
+model Comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+  create_date DateTime @default(now())
+
+  blog Blog @relation(fields: [blog_id], references: [id], onDelete: Cascade)
+  blog_id String @db.ObjectId
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+
+  reply Reply_comment[]
+}
+
+model Reply_comment {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  message String
+  create_date DateTime @default(now())
+
+  blog Blog @relation(fields: [blog_id], references: [id], onDelete: Cascade)
+  blog_id String @db.ObjectId
+
+  comment Comment @relation(fields: [comment_id], references: [id],onDelete: Cascade)
+  comment_id String @db.ObjectId
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String @db.ObjectId
+}

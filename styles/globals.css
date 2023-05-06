@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+body > div:first-child,
+div#__next,
+div#__next > div {
+    min-height: 100vh;
+}
+
+.animation-fadeIn {
+    animation-name: fadeIn;
+    animation-duration: 0.25s;
+    animation-timing-function: ease-in;
+}
+
+.animation-slideUp {
+    animation-name: slideUp;
+    animation-duration: 0.25s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(8px);
+        opacity: 0;
+    }
+    60% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
