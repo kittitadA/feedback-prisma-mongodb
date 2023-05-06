@@ -13,7 +13,9 @@ export default async function users(req: NextApiRequest, res: NextApiResponse) {
 
             const user: any = await prisma.user.findUnique({
                 where: { email: email.toString() },
-                include: {
+                select: {
+                    email: true,
+                    privilege: true,
                     profile: true,
                 },
             })
