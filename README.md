@@ -1,6 +1,6 @@
 ## 🎉 Demo url
 
-...
+https://feedback-prisma-mongodb.vercel.app/
 
 ## 🔑 Login account for demo
 
