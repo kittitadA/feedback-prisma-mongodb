@@ -163,6 +163,7 @@ const Home: React.FC<homeProps> = ({
 
                     {blog_page.loaded &&
                         !isLoading &&
+                        !isLoadingSort &&
                         blog_page.data.length === 0 && (
                             <div className="pt-40 animation-fadeIn">
                                 <Image

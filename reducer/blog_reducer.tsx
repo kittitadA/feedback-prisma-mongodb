@@ -415,8 +415,8 @@ function blogReducer(state: any = initailState, action: any) {
                                             $set: state.category.data[0].name,
                                         },
                                     })
-                                    return p
                                 }
+                                return p
                             },
                         },
                         sort: { $set: "vote" },
